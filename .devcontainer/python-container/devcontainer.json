@@ -1,0 +1,14 @@
+{
+  "name": "LogAI Container",
+  "dockerComposeFile": ["../../docker-compose.yml"],
+  "service": "logai",
+  "shutdownAction": "none",
+  "workspaceFolder": "/workspace/logai",
+  "containerEnv": {
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONPATH": "."
+  },
+  "postCreateCommand": "bash setup_logai.sh",
+  "forwardPorts": [8050, 5000]
+}

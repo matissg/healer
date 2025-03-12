@@ -1,0 +1,23 @@
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Create a New Order</h1>
+
+<div class="bg-white shadow rounded-lg p-6 max-w-md mx-auto">
+  <%= form_with(model: @order, local: true, class: "space-y-6") do |form| %>
+    
+    <div>
+      <%= form.label :user_id, "User", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.collection_select :user_id, @users, :id, :name, {}, 
+        class: "block w-48 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+    </div>
+
+    <div>
+      <%= form.label :total, "Order Total", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.number_field :total, step: 0.01, 
+        class: "block w-48 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+    </div>
+
+    <div>
+      <%= form.submit "Create Order", class: "w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700" %>
+    </div>
+    
+  <% end %>
+</div>

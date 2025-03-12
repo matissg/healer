@@ -1,0 +1,12 @@
+<h1 class="text-3xl font-bold text-gray-800 mb-6">Notifications</h1>
+
+<div class="bg-white shadow rounded-lg p-6">
+  <ul class="space-y-4">
+    <% @notifications.each do |notification| %>
+      <li class="p-4 bg-gray-100 rounded shadow">
+        <p class="text-gray-700"><%= notification.message %></p>
+        <p class="text-xs text-gray-500"><%= notification.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+      </li>
+    <% end %>
+  </ul>
+</div>
