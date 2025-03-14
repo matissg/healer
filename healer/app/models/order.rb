@@ -8,6 +8,8 @@ class Order < ApplicationRecord
 
   after_create :publish_order_created_event
 
+  validates :total, numericality: { greater_than: 0 }
+
   private
 
   def publish_order_created_event

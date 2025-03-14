@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = Order.includes(:user).all
+    @orders = Order.all
   end
 
   private

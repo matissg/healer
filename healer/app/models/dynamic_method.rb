@@ -1,0 +1,2 @@
+class DynamicMethod < ApplicationRecord
+end
