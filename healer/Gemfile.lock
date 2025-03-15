@@ -423,6 +423,7 @@ DEPENDENCIES
   capybara
   debug
   faker
+  faraday
   importmap-rails
   jbuilder
   jsbundling-rails (~> 1.3)

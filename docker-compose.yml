@@ -2,20 +2,26 @@ services:
   rails-app:
     image: mcr.microsoft.com/devcontainers/ruby:3.3-bookworm
     volumes:
-      # Mount the root folder that contains .git
       - .:/workspace:cached
     ports:
       - "3000:3000"
     command: sleep infinity
     depends_on:
     - selenium
+    - catalog
   selenium:
     image: selenium/standalone-chromium
     restart: unless-stopped
+  catalog:
+    image: mcr.microsoft.com/devcontainers/ruby:3.3-bookworm
+    volumes:
+      - .:/workspace:cached
+    ports:
+      - "3001:3001"
+    command: sleep infinity
   logai:
     image: mcr.microsoft.com/devcontainers/python:3.10-bookworm
     volumes:
-      # Mount the root folder that contains .git
       - .:/workspace:cached
     ports:
       - "8050:8050"

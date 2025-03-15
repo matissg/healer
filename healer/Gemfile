@@ -46,8 +46,12 @@ gem "thruster", require: false
 gem "wisper_next"
 gem "wisper_next-activejob", git: "https://gitlab.com/kris.leech/wisper_next-activejob"
 
+# Auto-terminate potentially long-running operations in Ruby
 gem "timeout"
+# OpenAI API client library
 gem "ruby-openai"
+# HTTP/REST API client library
+gem "faraday"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

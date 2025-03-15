@@ -1,7 +1,6 @@
 class Order < ApplicationRecord
   include WisperNext.publisher
   EVENTS = WisperNext::Events.new
-  EVENTS.subscribe(InventoryAdjustmentListener.new)
   EVENTS.subscribe(OrderConfirmationListener.new)
 
   belongs_to :user

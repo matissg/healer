@@ -19,14 +19,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_14_090139) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "notifications", force: :cascade do |t|
-    t.text "message"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "orders", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
+    t.string "product_name", null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.integer "quantity", null: false
     t.decimal "total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

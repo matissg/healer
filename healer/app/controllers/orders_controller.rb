@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @users = User.all
+    @products = Catalog.fetch("products") || []
   end
 
   def create
@@ -21,6 +22,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:user_id, :total)
+    params.require(:order).permit(:user_id, :product_name, :price, :quantity, :total)
   end
 end

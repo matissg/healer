@@ -11,6 +11,8 @@ require "faker"
 
 time_now = Time.current
 
+puts "\n== Inserting users =="
+
 User.insert_all(
   20.times.map do
     name = ::Faker::Name.name
@@ -23,13 +25,22 @@ User.insert_all(
   end
 )
 
+puts "\n== Inserting orders =="
+
 user_ids = User.pluck(:id)
 
 Order.insert_all(
   100.times.map do
+    quantity = rand(1..10)
+    price = rand(100..1000)
+    total = quantity * price
+
     {
       user_id: user_ids.sample,
-      total: rand(100..1000),
+      product_name: ::Faker::Commerce.product_name,
+      quantity: quantity,
+      price: price,
+      total: total,
       created_at: time_now,
       updated_at: time_now
     }
