@@ -147,6 +147,8 @@ GEM
     et-orbi (1.2.11)
       tzinfo
     event_stream_parser (1.0.0)
+    faker (3.5.1)
+      i18n (>= 1.8.11, < 2)
     faraday (2.12.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
@@ -420,6 +422,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  faker
   importmap-rails
   jbuilder
   jsbundling-rails (~> 1.3)

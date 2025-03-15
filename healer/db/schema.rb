@@ -161,7 +161,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_14_090139) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "orders", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

@@ -7,6 +7,31 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-%w[Alice Bob John George Peter Anna Diana].each do |name|
-  User.create!(name: name, email: "#{name.downcase}@example.com")
-end
+require "faker"
+
+time_now = Time.current
+
+User.insert_all(
+  20.times.map do
+    name = ::Faker::Name.name
+    {
+      name: name,
+      email: "#{name.gsub(" ", "").underscore}@example.com",
+      created_at: time_now,
+      updated_at: time_now
+    }
+  end
+)
+
+user_ids = User.pluck(:id)
+
+Order.insert_all(
+  100.times.map do
+    {
+      user_id: user_ids.sample,
+      total: rand(100..1000),
+      created_at: time_now,
+      updated_at: time_now
+    }
+  end
+)
