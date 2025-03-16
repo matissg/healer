@@ -8,30 +8,17 @@
       <%= form.collection_select :user_id, @users, :id, :name, {}, 
         class: "block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2" %>
     </div>
-
-    <div>
-      <%= form.label :product_name, "Product", class: "block text-gray-700 font-medium mb-2" %>
-      <select name="product_name"
-              class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-              data-controller="product"
-              data-action="change->product#updatePrice"
-              data-product-products="<%= @products.map { |p| { name: p.name, price: p.price } }.to_json %>">
-        <option value="">Select a product</option>
-        <% @products.each do |product| %>
-          <option value="<%= product.name %>"><%= product.name %></option>
-        <% end %>
-      </select>
+    <div >
+        <%= form.label :product_catalog_guid, "Product", class: "block text-gray-700 font-medium mb-2" %>
+        <%= form.select :product_catalog_guid, 
+              options_for_select(@products.map{|product| ["#{product.name} (€ #{product.price})", product.id]}, @order.product_catalog_guid), 
+              {}, 
+              class: "block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2", 
+              data: { action: "change->product#updatePrice" } %>
     </div>
-
-    <!-- Display Product Price on Product change -->
-    <p class="text-gray-700 mt-2">Price: <span id="price_display">Select a product</span></p>
-
-    <!-- Hidden Input for Price -->
-    <%= form.hidden_field :price, id: "product_price_field" %>
-
     <div>
-      <%= form.label :total, "Order Total", class: "block text-gray-700 font-medium mb-2" %>
-      <%= form.number_field :total, step: 0.01, 
+      <%= form.label :quantity, "Quantity", class: "block text-gray-700 font-medium mb-2" %>
+      <%= form.number_field :quantity, step: 1, 
         class: "block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2" %>
     </div>
 

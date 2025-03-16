@@ -5,6 +5,7 @@
     <tr>
       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
       <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
     </tr>
@@ -14,6 +15,7 @@
       <tr class="hover:bg-gray-50">
         <td class="px-6 py-4 whitespace-nowrap"><%= order.id %></td>
         <td class="px-6 py-4 whitespace-nowrap"><%= order.user.name %></td>
+        <td class="px-6 py-4 whitespace-nowrap"><%= order.product_name %></td>
         <td class="px-6 py-4 whitespace-nowrap"><%= number_to_currency(order.total) %></td>
         <td class="px-6 py-4 whitespace-nowrap"><%= order.created_at %></td>
       </tr>

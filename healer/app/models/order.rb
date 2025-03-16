@@ -1,5 +1,6 @@
 class Order < ApplicationRecord
   include WisperNext.publisher
+
   EVENTS = WisperNext::Events.new
   EVENTS.subscribe(OrderConfirmationListener.new)
 

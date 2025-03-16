@@ -1,7 +1,5 @@
 class Healer::DynamicMethod::Load
-  SAFE_METHODS = %w[index show update destroy].freeze
-
-  private_constant :SAFE_METHODS
+  SAFE_METHODS = %w[index show new create edit update destroy].freeze
 
   attr_reader :klass
 

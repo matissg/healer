@@ -6,11 +6,12 @@ class Catalog
   BASE_URL = "http://catalog:3001"
 
   def self.fetch(path)
+    puts "Fetching data from Catalog API..."
     response = Faraday.get("#{BASE_URL}/#{path}")
 
     if response.success?
       # Parse and convert to to OpenStruct objects for compatibility with Rails helpers
-      JSON.parse(response.body).map { |product| OpenStruct.new(product) }
+      Array.wrap(JSON.parse(response.body)).map { |product| OpenStruct.new(product) }
     else
       Rails.logger.error("Catalog API Error: #{response.status} - #{response.body}")
       nil

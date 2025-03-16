@@ -7,6 +7,10 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
+    @order.product_name = product.name
+    @order.price = product.price
+    @order.total = @order.quantity * product.price
+
     if @order.save
       redirect_to orders_path, notice: "Order was successfully created."
     else
@@ -21,7 +25,11 @@ class OrdersController < ApplicationController
 
   private
 
+  def product
+    @product ||= Catalog.fetch("products/#{order_params[:product_catalog_guid]}")&.first
+  end
+
   def order_params
-    params.require(:order).permit(:user_id, :product_name, :price, :quantity, :total)
+    params.require(:order).permit(:user_id, :product_catalog_guid, :quantity, :product_name, :price, :total)
   end
 end

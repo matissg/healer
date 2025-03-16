@@ -21,10 +21,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_14_090139) do
 
   create_table "orders", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.bigint "product_catalog_guid"
     t.string "product_name", null: false
-    t.decimal "price", precision: 10, scale: 2, null: false
-    t.integer "quantity", null: false
-    t.decimal "total"
+    t.decimal "price", precision: 10, scale: 2
+    t.integer "quantity", default: 1, null: false
+    t.decimal "total", precision: 10, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_orders_on_user_id"

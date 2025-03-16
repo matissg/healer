@@ -37,6 +37,7 @@ Order.insert_all(
 
     {
       user_id: user_ids.sample,
+      product_catalog_guid: ::Faker::Number.number(digits: 10),
       product_name: ::Faker::Commerce.product_name,
       quantity: quantity,
       price: price,
