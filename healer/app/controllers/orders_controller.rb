@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
     @order = Order.new(order_params)
     @order.product_name = product.name
     @order.price = product.price
-    @order.total = @order.quantity * product.price
+    @order.total = @order.quantity.to_i * product.price.to_f
 
     if @order.save
       redirect_to orders_path, notice: "Order was successfully created."
@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = Order.includes(:user).all
+    @orders = Order.all
   end
 
   private
@@ -30,6 +30,6 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:user_id, :product_catalog_guid, :quantity, :product_name, :price, :total)
+    params.require(:order).permit(:user_id, :product_catalog_guid, :quantity)
   end
 end

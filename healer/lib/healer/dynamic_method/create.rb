@@ -12,7 +12,10 @@ class Healer::DynamicMethod::Create
   end
 
   def call
-    create_dynamic_method unless ::DynamicMethod.exists?(class_name: klass.name, method_name: action_name)
+    return if ::DynamicMethod.exists?(class_name: klass.name, method_name: action_name)
+
+    # tested = run_method_unit_tests if define_safe_method
+    create_dynamic_method #if tested
   end
 
   private
@@ -23,6 +26,24 @@ class Healer::DynamicMethod::Create
 
   def openai_response
     @openai_response ||= ::Healer::Openai::Response.call(prompt: openai_prompt)
+  end
+
+  def define_safe_method
+    ::Healer::DynamicMethod::SafeMethod.call(
+      klass: klass,
+      method_name: action_name,
+      method_source: openai_response["method_source"]
+    )
+  end
+
+  def run_method_unit_tests
+    cmd = "RAILS_ENV=test bundle exec rspec spec/requests/#{klass.name.underscore}_spec.rb"
+    stdout, stderr, status = Open3.capture3(cmd)
+  
+    puts stdout
+    warn stderr unless stderr.empty?
+  
+    status.success?
   end
 
   def create_dynamic_method

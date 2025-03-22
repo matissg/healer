@@ -23,5 +23,6 @@ module Healer
     #
     # config.time_zone = "Central Time (US & Canada)"
     config.eager_load_paths << Rails.root.join("app", "listeners")
+    config.generators.test_framework = :rspec
   end
 end

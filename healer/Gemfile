@@ -25,8 +25,6 @@ gem "jbuilder"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-gem "pry-rails"
-
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
 gem "solid_queue"
@@ -64,14 +62,24 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   gem "faker"
+  gem "pry-rails"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "annotate"
 end
 
 group :test do
+  gem "rspec"
+  gem "rspec-rails"
+  # retry intermittently failing rspec examples
+  gem "rspec-retry"
+  # Collection cardinality matchers, extracted from rspec-expectations
+  gem "rspec-collection_matchers"
+  gem "rails-controller-testing"
+  gem "factory_bot_rails"
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"

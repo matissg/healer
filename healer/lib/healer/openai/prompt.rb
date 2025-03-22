@@ -16,7 +16,7 @@ class Healer::Openai::Prompt
   SOURCE_CODE_UNAVAILABLE = "Source code not available"
   ALLOWED_VIEW_FILE_EXTENSIONS = %w[html.erb json.jbuilder].freeze
 
-  private_constant :PROMPT, :SOURCE_CODE_UNAVAILABLE, ALLOWED_VIEW_FILE_EXTENSIONS
+  private_constant :PROMPT, :SOURCE_CODE_UNAVAILABLE
 
   attr_reader :klass, :action_name, :error
 

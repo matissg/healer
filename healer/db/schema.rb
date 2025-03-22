@@ -17,6 +17,33 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_14_090139) do
     t.text "method_source"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["class_name", "method_name"], name: "index_dynamic_methods_on_class_name_and_method_name", unique: true
+  end
+
+  create_table "healer_error_events", force: :cascade do |t|
+    t.string "class_name", null: false
+    t.string "method_name", null: false
+    t.json "error", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["class_name", "method_name"], name: "index_healer_error_events_on_class_name_and_method_name", unique: true
+  end
+
+  create_table "healer_error_mitigations", force: :cascade do |t|
+    t.integer "healer_error_event_id", null: false
+    t.json "prompt", default: {}, null: false
+    t.json "response", default: {}, null: false
+    t.text "method_source"
+    t.boolean "success", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["healer_error_event_id"], name: "index_healer_error_mitigations_on_healer_error_event_id"
+  end
+
+  create_table "healer_logs", force: :cascade do |t|
+    t.string "action_name"
+    t.string "result"
+    t.datetime "created_at", null: false
   end
 
   create_table "orders", force: :cascade do |t|
@@ -159,6 +186,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_14_090139) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "healer_error_mitigations", "healer_error_events"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
