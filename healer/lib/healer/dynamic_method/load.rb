@@ -12,11 +12,9 @@ class Healer::DynamicMethod::Load
   end
 
   def call
-    ::DynamicMethod
+    ::Healer::ErrorEvent
       .where(class_name: klass.name, method_name: SAFE_METHODS)
-      .find_each do |dm|  
-        load_safe_method(dm.method_name, dm.method_source)
-    end
+      .find_each { |event| load_safe_method(event.method_name, event.method_source) }
   end
 
   private

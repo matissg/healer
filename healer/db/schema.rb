@@ -11,6 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2025_03_22_090139) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "dynamic_methods", force: :cascade do |t|
     t.string "class_name"
     t.string "method_name"
@@ -21,30 +24,25 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_22_090139) do
   end
 
   create_table "healer_activity_logs", force: :cascade do |t|
-    t.string "action_name"
-    t.json "result"
-    t.datetime "created_at", null: false
+    t.bigint "error_event_id", null: false, comment: "The error event"
+    t.string "action_name", comment: "Action taken"
+    t.json "result", comment: "The result of the action"
+    t.datetime "created_at", null: false, comment: "The creation time of the log"
     t.index ["created_at"], name: "index_healer_activity_logs_on_created_at"
+    t.index ["error_event_id"], name: "index_healer_activity_logs_on_error_event_id"
   end
 
   create_table "healer_error_events", force: :cascade do |t|
-    t.string "class_name", null: false
-    t.string "method_name", null: false
-    t.json "error", default: {}, null: false
+    t.string "class_name", null: false, comment: "The class name where the error occurred"
+    t.string "method_name", null: false, comment: "The method name where the error occurred"
+    t.json "error", default: {}, null: false, comment: "The error details"
+    t.json "prompt", default: {}, null: false, comment: "The prompt for AI agent"
+    t.json "response", default: {}, null: false, comment: "The response from AI agent"
+    t.text "method_source", comment: "The source code of the method"
+    t.boolean "success", default: false, null: false, comment: "The success status of the mitigation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["class_name", "method_name"], name: "index_healer_error_events_on_class_name_and_method_name", unique: true
-  end
-
-  create_table "healer_error_mitigations", force: :cascade do |t|
-    t.integer "healer_error_event_id", null: false
-    t.json "prompt", default: {}, null: false
-    t.json "response", default: {}, null: false
-    t.text "method_source"
-    t.boolean "success", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["healer_error_event_id"], name: "index_healer_error_mitigations_on_healer_error_event_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -187,7 +185,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_22_090139) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "healer_error_mitigations", "healer_error_events"
+  add_foreign_key "healer_activity_logs", "healer_error_events", column: "error_event_id"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

@@ -14,24 +14,32 @@ class Healer::DynamicMethod::Create
   end
 
   def call
-    return if ::DynamicMethod.exists?(class_name: klass.name, method_name: action_name)
+    return if ::Healer::ErrorEvent.exists?(class_name: klass.name, method_name: action_name)
+    return unless define_safe_method
 
-    tested = run_method_unit_tests if define_safe_method
-    create_dynamic_method if tested
+    result = run_method_unit_tests
+    update_healer_error_event_result(result)
   end
 
   private
 
+  def healer_error_event
+    @healer_error_event ||=
+      ::Healer::ErrorEvent.create!(class_name: klass.name, method_name: action_name, error: error.to_json)
+  end
+
   def openai_prompt
-    ::Healer::Openai::Prompt.call(klass: klass, action_name: action_name, error: error)
+    prompt = ::Healer::Openai::Prompt.call(klass: klass, action_name: action_name, error: error)
+    log(healer_error_event.id, "AI prompt", prompt.to_json)
+    healer_error_event.update!(prompt: prompt.to_json)
+    prompt
   end
 
   def openai_response
     @openai_response ||= begin
-      prompt = openai_prompt
-      log("AI prompt", prompt.to_json)
-      response = ::Healer::Openai::Response.call(prompt: prompt)
-      log("AI response", response.to_json)
+      response = ::Healer::Openai::Response.call(prompt: openai_prompt)
+      log(healer_error_event.id, "AI response", response.to_json)
+      healer_error_event.update!(response: response.to_json, method_source: response["method_source"])
       response
     end
   end
@@ -42,29 +50,36 @@ class Healer::DynamicMethod::Create
       method_name: action_name,
       method_source: openai_response["method_source"]
     )
+
+    true
+  end
+
+  def update_healer_error_event_result(result)
+    if result == false
+      log(
+        healer_error_event.id,
+        "Dynamic method test fail",
+        "Healer::ErrorEvent ID=#{healer_error_event.id} not mitigated".to_json
+      )
+    else
+      log(
+        healer_error_event.id,
+        "Dynamic method test success",
+        "Healer::ErrorEvent ID=#{healer_error_event.id} mitigated".to_json
+      )
+
+      healer_error_event.update!(success: true)
+    end
   end
 
   def run_method_unit_tests
     Rails.logger.info("Running tests for #{klass.name}##{action_name}")
     cmd = "RAILS_ENV=test bundle exec rspec spec/requests/#{klass.name.underscore}_spec.rb"
     stdout, stderr, status = Open3.capture3(cmd)
-  
+
     puts stdout
     warn stderr unless stderr.empty?
-  
-    result = status.success?
-    log("Unit test", "Test result for #{klass.name}##{action_name}: #{result}".to_json)
-    result
-  end
 
-  def create_dynamic_method
-    dynamic_method = 
-      ::DynamicMethod.create!(
-        class_name: openai_response["class_name"],
-        method_name: openai_response["method_name"],
-        method_source: openai_response["method_source"]
-      )
-
-    log("Dynamic method", "DynamicMethod ID=#{dynamic_method.id} created".to_json)
+    status.success?
   end
 end

@@ -3,7 +3,7 @@ module Healer::Concerns::WithLogger
 
   private
 
-  def log(action_name, result)
-    ::Healer::ActivityLog.create!(action_name: action_name, result: result)
+  def log(error_event_id, action_name, result)
+    ::Healer::ActivityLog.create!(error_event_id: error_event_id, action_name: action_name, result: result)
   end
 end
