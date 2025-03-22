@@ -14,8 +14,9 @@ class Healer::Openai::Prompt
   .freeze
 
   SOURCE_CODE_UNAVAILABLE = "Source code not available"
+  ALLOWED_VIEW_FILE_EXTENSIONS = %w[html.erb json.jbuilder].freeze
 
-  private_constant :PROMPT, :SOURCE_CODE_UNAVAILABLE
+  private_constant :PROMPT, :SOURCE_CODE_UNAVAILABLE, ALLOWED_VIEW_FILE_EXTENSIONS
 
   attr_reader :klass, :action_name, :error
 
@@ -66,9 +67,8 @@ class Healer::Openai::Prompt
 
   def view_source
     controller_name = klass.name.sub("Controller", "").underscore
-    possible_extensions = %w[html.erb json.jbuilder]
 
-    possible_extensions.each do |ext|
+    ALLOWED_VIEW_FILE_EXTENSIONS.each do |ext|
       view_file = Rails.root.join("app", "views", controller_name, "#{action_name}.#{ext}")
 
       return File.read(view_file) if File.exist?(view_file)

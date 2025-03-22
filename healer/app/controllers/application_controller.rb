@@ -4,8 +4,7 @@ class ApplicationController < ActionController::Base
   TIMEOUT_SEC = 30
 
   before_action :load_dynamic_methods, only: ::Healer::DynamicMethod::Load::SAFE_METHODS
-  around_action :apply_timeout_to_methods, only: %i[index show update destroy]
-
+  around_action :apply_timeout_to_methods, only: ::Healer::DynamicMethod::Load::SAFE_METHODS
   rescue_from StandardError, with: :resolve_error
 
   private
