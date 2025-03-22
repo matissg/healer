@@ -1,4 +1,6 @@
 class Healer::DynamicMethod::Create
+  include ::Healer::Concerns::WithLogger
+
   attr_reader :klass, :action_name, :error
 
   def initialize(klass:, action_name:, error:)
@@ -14,8 +16,8 @@ class Healer::DynamicMethod::Create
   def call
     return if ::DynamicMethod.exists?(class_name: klass.name, method_name: action_name)
 
-    # tested = run_method_unit_tests if define_safe_method
-    create_dynamic_method #if tested
+    tested = run_method_unit_tests if define_safe_method
+    create_dynamic_method if tested
   end
 
   private
@@ -25,7 +27,13 @@ class Healer::DynamicMethod::Create
   end
 
   def openai_response
-    @openai_response ||= ::Healer::Openai::Response.call(prompt: openai_prompt)
+    @openai_response ||= begin
+      prompt = openai_prompt
+      log("AI prompt", prompt.to_json)
+      response = ::Healer::Openai::Response.call(prompt: prompt)
+      log("AI response", response.to_json)
+      response
+    end
   end
 
   def define_safe_method
@@ -37,20 +45,26 @@ class Healer::DynamicMethod::Create
   end
 
   def run_method_unit_tests
+    Rails.logger.info("Running tests for #{klass.name}##{action_name}")
     cmd = "RAILS_ENV=test bundle exec rspec spec/requests/#{klass.name.underscore}_spec.rb"
     stdout, stderr, status = Open3.capture3(cmd)
   
     puts stdout
     warn stderr unless stderr.empty?
   
-    status.success?
+    result = status.success?
+    log("Unit test", "Test result for #{klass.name}##{action_name}: #{result}".to_json)
+    result
   end
 
   def create_dynamic_method
-    ::DynamicMethod.create!(
-      class_name: openai_response["class_name"],
-      method_name: openai_response["method_name"],
-      method_source: openai_response["method_source"]
-    )
+    dynamic_method = 
+      ::DynamicMethod.create!(
+        class_name: openai_response["class_name"],
+        method_name: openai_response["method_name"],
+        method_source: openai_response["method_source"]
+      )
+
+    log("Dynamic method", "DynamicMethod ID=#{dynamic_method.id} created".to_json)
   end
 end

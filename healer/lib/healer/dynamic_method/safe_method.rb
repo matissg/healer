@@ -15,6 +15,7 @@ class Healer::DynamicMethod::SafeMethod
 
   def call
     define_safe_method
+    true
   end
 
   private

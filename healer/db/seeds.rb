@@ -9,6 +9,8 @@
 #   end
 require "faker"
 
+return unless Rails.env.development?
+
 time_now = Time.current
 
 puts "\n== Inserting users =="

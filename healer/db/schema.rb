@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_03_14_090139) do
+ActiveRecord::Schema[8.1].define(version: 2025_03_22_090139) do
   create_table "dynamic_methods", force: :cascade do |t|
     t.string "class_name"
     t.string "method_name"
@@ -18,6 +18,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_14_090139) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["class_name", "method_name"], name: "index_dynamic_methods_on_class_name_and_method_name", unique: true
+  end
+
+  create_table "healer_activity_logs", force: :cascade do |t|
+    t.string "action_name"
+    t.json "result"
+    t.datetime "created_at", null: false
+    t.index ["created_at"], name: "index_healer_activity_logs_on_created_at"
   end
 
   create_table "healer_error_events", force: :cascade do |t|
@@ -38,12 +45,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_03_14_090139) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["healer_error_event_id"], name: "index_healer_error_mitigations_on_healer_error_event_id"
-  end
-
-  create_table "healer_logs", force: :cascade do |t|
-    t.string "action_name"
-    t.string "result"
-    t.datetime "created_at", null: false
   end
 
   create_table "orders", force: :cascade do |t|
