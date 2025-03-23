@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @users = User.all
+    # Product list fetched from external API source
     @products = Catalog.fetch("products") || []
   end
 
@@ -26,6 +27,7 @@ class OrdersController < ApplicationController
   private
 
   def product
+    # Product by its ID fetched from external API source
     @product ||= Catalog.fetch("products/#{order_params[:product_catalog_guid]}")&.first
   end
 

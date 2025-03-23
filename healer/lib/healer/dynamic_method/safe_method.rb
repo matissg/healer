@@ -1,5 +1,3 @@
-require "open3"
-
 class Healer::DynamicMethod::SafeMethod
   attr_reader :klass, :method_name, :method_source
 
