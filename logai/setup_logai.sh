@@ -16,7 +16,6 @@ python3.10 -m nltk.downloader punkt punkt_tab
 
 echo "Starting LogAI GUI and Log Processor..."
 python3.10 gui/application.py --host 0.0.0.0 --port 8050 --reload &
-python3.10 gui/log_processor.py --host 0.0.0.0 --port 5000 --reload &
 
 echo "LogAI is running. Processes are in the background."
 wait  # Wait for all background processes to complete
