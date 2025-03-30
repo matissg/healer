@@ -1,24 +1,19 @@
-# README
+# Catalog API app
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The Catalog app simulates Product list endpoint which can be queried by the main app.
+The app can be started manually by attaching shell to the "healer-catalog-1" container and then
 
-Things you may want to cover:
+    cd workspace/catalog
+    bin/dev
 
-* Ruby version
+The app runs on http://localhost:3001/ and is intended as API only app. 
 
-* System dependencies
+The app can be rebuilt with
 
-* Configuration
+    bin/setup
 
-* Database creation
+## Tech stack
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+ - Ruby 3.3
+ - Ruby on Rails 7.1
+ - SQLite

@@ -9,6 +9,6 @@
     "LC_ALL": "C.UTF-8",
     "PYTHONPATH": "."
   },
-  "postCreateCommand": "bash setup_logai.sh",
-  "forwardPorts": [8050, 5000]
+  "forwardPorts": [8050],
+  "postCreateCommand": "bash /workspace/logai/setup_logai.sh"
 }

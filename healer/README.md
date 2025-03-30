@@ -1,11 +1,15 @@
-# AI agent driven error mitigation demo app
+# Rails app
 
-This Ruby on Rails app demonstrates how AI agent can mitigate application errors in autonomous manner.
+The main experiment app is available http://localhost:3000/ 
+The app can be started manually by attaching shell to the "healer-rails-app-1" container and then
 
-## Start the app
+    cd workspace/healer
+    bin/dev
 
-- Install Python 3.10.13 as it is required by LogAI
-- Set this app by running `bin/setup`
-- Run `npm install` to add JS dependencies
-- Start this app with `bin/dev`
-- View the Rails app in http://localhost:3000/
+The app runs on Ruby on Rails 8.1 and PostgreSQL (DB) in separate container to allow running RSpec tests before applying changed code.
+
+## Tech stack
+
+ - Ruby 3.3
+ - Ruby on Rails 8.1
+ - PostgreSQL 17

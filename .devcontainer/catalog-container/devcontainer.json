@@ -13,14 +13,10 @@
     },
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     "forwardPorts": [3001],
-  
     // Configure tool-specific properties.
     // "customizations": {},
-  
     // Uncomment to connect as root instead. More info: https://containers.dev/implementors/json_reference/#remoteUser.
     // "remoteUser": "root",
-  
-  
     // Use 'postCreateCommand' to run commands after the container is created.
     "postCreateCommand": "bin/setup"
 }
