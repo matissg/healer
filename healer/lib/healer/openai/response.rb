@@ -2,7 +2,7 @@ class Healer::Openai::Response
   include ::Healer::Concerns::WithLogger
 
   MODEL = "gpt-4o"
-  RESPONSE_FORMAT = { type: "json_object" }
+  RESPONSE_FORMAT = { type: "json_object" }.freeze
   ROLE = "user"
 
   private_constant :MODEL, :RESPONSE_FORMAT, :ROLE

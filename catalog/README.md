@@ -14,6 +14,6 @@ The app can be rebuilt with
 
 ## Tech stack
 
- - Ruby 3.3
+ - Ruby 3.4
  - Ruby on Rails 7.1
  - SQLite

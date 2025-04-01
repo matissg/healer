@@ -1,6 +1,6 @@
 services:
   rails-app:
-    image: mcr.microsoft.com/devcontainers/ruby:3.3-bookworm
+    image: mcr.microsoft.com/devcontainers/ruby:3.4-bookworm
     volumes:
       - .:/workspace:cached
     ports:
@@ -29,7 +29,7 @@ services:
     image: selenium/standalone-chromium
     restart: unless-stopped
   catalog:
-    image: mcr.microsoft.com/devcontainers/ruby:3.3-bookworm
+    image: mcr.microsoft.com/devcontainers/ruby:3.4-bookworm
     volumes:
       - .:/workspace:cached
     ports:

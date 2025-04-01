@@ -10,6 +10,6 @@ The app runs on Ruby on Rails 8.1 and PostgreSQL (DB) in separate container to a
 
 ## Tech stack
 
- - Ruby 3.3
+ - Ruby 3.4
  - Ruby on Rails 8.1
  - PostgreSQL 17
