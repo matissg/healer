@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def apply_timeout_to_methods
-    Timeout.timeout(test_env? ? 60 : TIMEOUT_SEC) { yield }
+    Timeout.timeout(TIMEOUT_SEC) { yield }
   rescue Timeout::Error
     call_healer(error: "Request timed out for #{self.class}##{action_name}")
   end

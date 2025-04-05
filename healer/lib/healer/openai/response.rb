@@ -7,11 +7,10 @@ class Healer::Openai::Response
 
   private_constant :MODEL, :RESPONSE_FORMAT, :ROLE
 
-  attr_reader :healer_error_event, :prompt
+  attr_reader :healer_error_event
 
-  def initialize(healer_error_event:, prompt:)
+  def initialize(healer_error_event:)
     @healer_error_event = healer_error_event
-    @prompt = prompt
   end
 
   def self.call(...)
@@ -26,13 +25,17 @@ class Healer::Openai::Response
 
   private
 
+  def prompt
+    ::Healer::Openai::Prompt.call(healer_error_event: healer_error_event)
+  end
+
   def chat
     @chat ||= begin
       ::OpenAI::Client.new.chat(
         parameters: {
           model: MODEL,
           response_format: RESPONSE_FORMAT,
-          messages: [{ role: ROLE, content: prompt.to_s}]
+          messages: [{ role: ROLE, content: prompt}]
         }
       )
     end

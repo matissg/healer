@@ -37,7 +37,7 @@ class Healer::Openai::Prompt
     log("AI prompt", prompt_json)
     healer_error_event.update!(prompt: prompt_json)
 
-    prompt
+    prompt.to_s
   end
 
   private

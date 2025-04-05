@@ -1,6 +1,4 @@
 class Healer::DynamicMethod::Create
-  include ::Healer::Concerns::WithLogger
-
   attr_reader :klass, :action_name, :error
 
   def initialize(klass:, action_name:, error:)
@@ -28,12 +26,8 @@ class Healer::DynamicMethod::Create
       ::Healer::ErrorEvent.create!(class_name: klass.name, method_name: action_name, error: error.to_json)
   end
 
-  def openai_prompt
-    ::Healer::Openai::Prompt.call(healer_error_event: healer_error_event)
-  end
-
   def openai_response
-    ::Healer::Openai::Response.call(healer_error_event: healer_error_event, prompt: openai_prompt)
+    ::Healer::Openai::Response.call(healer_error_event: healer_error_event)
   end
 
   def define_safe_method
