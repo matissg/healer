@@ -33,6 +33,7 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = "#{::Rails.root}/spec/fixtures"
@@ -67,3 +68,6 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+temp_eval_path = Rails.root.join("spec/support/temp_dynamic_eval.rb")
+require temp_eval_path if File.exist?(temp_eval_path)

@@ -20,7 +20,7 @@ class Healer::Openai::Response
   def call
     log("AI response", result)
     healer_error_event.update!(response: chat, method_source: result["method_source"])
-    result
+    true
   end
 
   private

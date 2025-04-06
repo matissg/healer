@@ -13,7 +13,7 @@ class Healer::DynamicMethod::Create
 
   def call
     return if ::Healer::ErrorEvent.exists?(class_name: klass.name, method_name: action_name)
-    return unless define_safe_method
+    return unless openai_response
 
     # Let's run respective unit test to see if the new method works
     ::Healer::DynamicMethod::Test.call(healer_error_event: healer_error_event)
@@ -28,15 +28,5 @@ class Healer::DynamicMethod::Create
 
   def openai_response
     ::Healer::Openai::Response.call(healer_error_event: healer_error_event)
-  end
-
-  def define_safe_method
-    ::Healer::DynamicMethod::SafeMethod.call(
-      klass: klass,
-      method_name: action_name,
-      method_source: openai_response["method_source"]
-    )
-
-    true
   end
 end
