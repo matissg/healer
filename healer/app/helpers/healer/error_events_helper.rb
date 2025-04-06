@@ -1,0 +1,2 @@
+module Healer::ErrorEventsHelper
+end

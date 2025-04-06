@@ -1,0 +1,17 @@
+<%= form_with(model: healer_error_event, class: "contents") do |form| %>
+  <% if healer_error_event.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+      <h2><%= pluralize(healer_error_event.errors.count, "error") %> prohibited this healer_error_event from being saved:</h2>
+
+      <ul>
+        <% healer_error_event.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="inline">
+    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

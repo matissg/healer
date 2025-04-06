@@ -1,10 +1,8 @@
 class Healer::DynamicMethod::Create
-  attr_reader :klass, :action_name, :error
+  attr_reader :healer_error_event
 
-  def initialize(klass:, action_name:, error:)
-    @klass = klass
-    @action_name = action_name
-    @error = error
+  def initialize(healer_error_event:)
+    @healer_error_event = healer_error_event
   end
 
   def self.call(...)
@@ -12,21 +10,34 @@ class Healer::DynamicMethod::Create
   end
 
   def call
-    return if ::Healer::ErrorEvent.exists?(class_name: klass.name, method_name: action_name)
-    return unless openai_response
+    return if healer_error_event.blank?
 
-    # Let's run respective unit test to see if the new method works
-    ::Healer::DynamicMethod::Test.call(healer_error_event: healer_error_event)
+    run_uinit_test if resolvable? && openai_response
+  rescue StandardError => exception
+    Rails.logger.error("Error creating dynamic method: #{exception.message}")
+    false
   end
 
   private
 
-  def healer_error_event
-    @healer_error_event ||=
-      ::Healer::ErrorEvent.create!(class_name: klass.name, method_name: action_name, error: error.to_json)
+  def add_error(message)
+    healer_error_event.errors.add(:base, message)
+    false
+  end
+
+  def resolvable?
+    return add_error("Error event already resolved") if healer_error_event.success?
+    return add_error("Error event already has method source") if healer_error_event.method_source.present?
+
+    true
   end
 
   def openai_response
     ::Healer::Openai::Response.call(healer_error_event: healer_error_event)
+  end
+
+  def run_uinit_test
+    # Let's run respective unit test to see if the new method works
+    ::Healer::DynamicMethod::Test.call(healer_error_event: healer_error_event)
   end
 end

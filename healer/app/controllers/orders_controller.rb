@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  include WithHealerMethods
+
   def new
     @order = Order.new
     @users = User.all
