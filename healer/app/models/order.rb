@@ -8,7 +8,11 @@ class Order < ApplicationRecord
 
   after_create :publish_order_created_event
 
+  validates :price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :product_name, presence: true
+  validates :quantity, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
   validates :total, numericality: { greater_than: 0 }
+  validates :user_id, presence: true
 
   private
 

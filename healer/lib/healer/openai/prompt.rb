@@ -67,6 +67,10 @@ class Healer::Openai::Prompt
   end
 
   def method_source
+    # Let's return the method source from the error event if it is present
+    # It could be second try to get the method source after the first try failed
+    return healer_error_event.method_source if healer_error_event.method_source.present?
+
     method_obj = klass.instance_method(method_name.to_sym) rescue nil
     return log_code_unavailable("method_source") unless method_obj
 

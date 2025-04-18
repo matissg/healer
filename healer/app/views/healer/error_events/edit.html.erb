@@ -1,7 +1,7 @@
 <div class="mx-auto md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">Error event</h1>
   <br>
-  <p class="text-xl text-red-700 font-semibold">Do you want to us to resolve this error event now?</p>
+  <p class="text-xl text-red-700 font-semibold">Do you want us to resolve this error event now?</p>
 
   <%= form_with(model: @healer_error_event, class: "contents") do |form| %>
     <% if @healer_error_event.errors.any? %>
@@ -19,7 +19,7 @@
     <div class="mt-5">
       <p class="text-lg text-gray-700">Class: <%= @healer_error_event.class_name %></p>
       <p class="text-lg text-gray-700">Method: <%= @healer_error_event.method_name %></p>
-      <p class="text-lg text-gray-700">Error: <%= @healer_error_event.error["error"] %></p>
+      <p class="text-lg text-gray-700">Error: <%= JSON.parse(@healer_error_event.error)["error"] %></p>
     </div>
     <br>
     <div class="inline">

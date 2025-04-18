@@ -16,12 +16,14 @@ module WithHealerMethods
   end
 
   def load_dynamic_methods
-    ::Healer::DynamicMethod::Load.call(klass: self.class)
+    ::Healer::DynamicMethod::Load.call(klass: self.class, action_name: action_name)
   end
 
   def create_error_event(error)
-    ::Healer::ErrorEvent.create_or_find_by!(class_name: self.class.name, method_name: action_name) do |event|
+    ::Healer::ErrorEvent.find_or_initialize_by(class_name: self.class.name, method_name: action_name).tap do |event|
       event.error = error.to_json
+      event.success = false
+      event.save!
     end
   rescue ActiveRecord::RecordInvalid => exception
     Rails.logger.error("Error creating error event: #{exception.message}")
