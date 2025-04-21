@@ -34,11 +34,11 @@ class Healer::ErrorEventsController < ApplicationController
   # PATCH/PUT /healer/error_events/1 or /healer/error_events/1.json
   def update
     respond_to do |format|
-      if ::Healer::DynamicMethod::Create.call(healer_error_event: @healer_error_event)
+      if ::Healer::DynamicMethod::Create.call(healer_error_event: @healer_error_event) && @healer_error_event.reload.success?
         format.html { redirect_to resolution_path, notice: "Error event was successfully resolved." }
         format.json { render :show, status: :ok, location: @healer_error_event }
       else
-        format.html { render :edit, status: :unprocessable_entity, notice: "Error event could not be resolved." }
+        format.html { render :edit, status: :unprocessable_entity, notice: "Error event wasn't resolved." }
         format.json { render json: @healer_error_event.errors, status: :unprocessable_entity }
       end
     end

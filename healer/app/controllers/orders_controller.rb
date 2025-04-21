@@ -10,15 +10,15 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
-    @order.product_name = product.name
+    @order.product_name = product.title
     @order.price = product.price
     @order.total = @order.quantity.to_i * product.price.to_f
 
     if @order.save
       redirect_to orders_path, notice: "Order was successfully created."
     else
-      @users = User.all
-      render :new
+      raise StandardError,
+        "Invalid Order: #{@order.errors.full_messages}, Catalog fetched product data: #{product}"
     end
   end
 

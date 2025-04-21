@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   def path_from_controller_action(controller, action_name)
     controller = controller.underscore.gsub("_controller", "")
-    Rails.application.routes.url_helpers.url_for(controller: controller, action: action_name, only_path: true)
+    action = action_name == "create" ? "new" : action_name
+    Rails.application.routes.url_helpers.url_for(controller: controller, action: action, only_path: true)
   end
 end

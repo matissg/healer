@@ -1,7 +1,7 @@
 class Healer::ErrorEvent < ApplicationRecord
   self.table_name = "healer_error_events"
 
-  has_many :activity_logs, class_name: "Healer::ActivityLog", foreign_key: :error_event_id
+  has_many :activity_logs, class_name: "Healer::ActivityLog", foreign_key: :error_event_id, dependent: :destroy
 end
 
 # == Schema Information
