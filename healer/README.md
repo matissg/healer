@@ -13,3 +13,7 @@ The app runs on Ruby on Rails 8.1 and PostgreSQL (DB) in separate container to a
  - Ruby 3.4
  - Ruby on Rails 8.1
  - PostgreSQL 17
+
+# License
+
+This code is licensed under the terms of the MIT license.

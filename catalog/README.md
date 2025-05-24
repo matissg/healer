@@ -17,3 +17,7 @@ The app can be rebuilt with
  - Ruby 3.4
  - Ruby on Rails 7.1
  - SQLite
+
+# License
+
+This code is licensed under the terms of the MIT license.
