@@ -10,7 +10,7 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
-    @order.product_name = product.title
+    @order.product_name = product.name
     @order.price = product.price
     @order.total = @order.quantity.to_i * product.price.to_f
 
